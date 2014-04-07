@@ -98,10 +98,40 @@ group by follower_id;
 
 */
 
+/* Find topics with maximum number of followers and order them*/
 
+select content_follow.target_id as target_id, count(*) as number_of_followers 
+from content_follow group by content_follow.target_id order by number_of_followers;
 
+/* Find content types with maximum activity based on number of comments, likes and learn counts */
 
+select content_activity.type as type, sum(total_count) from
+	(select content_item.type as type, content_item.like_count + content_item.comment_count + content_item.learn_count 
+	as total_count from content_item ) as content_activity
+group by content_activity.type; 
 
+/*
 
+Results for additional queries
 
++-----------+---------------------+
+| target_id | number_of_followers |
++-----------+---------------------+
+|         8 |                   1 |
+|         9 |                   1 |
+|        10 |                   1 |
+|         1 |                   1 |
+|        11 |                   1 |
+|         2 |                   1 |
++-----------+---------------------+
+6 rows in set (0.00 sec)
+
++------------+------------------+
+| type       | sum(total_count) |
++------------+------------------+
+| technology |               45 |
++------------+------------------+
+1 row in set (0.00 sec)
+
+*/
 
